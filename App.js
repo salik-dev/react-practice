@@ -28,11 +28,12 @@ const numberArray = [{
   name:6
 }
 
-]
+];
+let operatorList = ['+', '-'];
 
 function App() {
 
-  const [output , setOutput] = useState(0)
+  const [output , setOutput] = useState('')
 
   function handleKeyPress(e){
     console.log("handleKeyPress", e.target.innerText)
@@ -40,7 +41,14 @@ function App() {
       name  = output + name;
      setOutput(name)
   }
-
+function calculation (a, b, operator){
+  if(operator==='+'){
+    return a + b;
+  }
+  else{
+    return a - b;
+  }
+}
   function handleResult(e){    
       
     /**
@@ -54,17 +62,33 @@ function App() {
         * 
         *  if(add operator is exist ) {function sum() { retunr sum..} }
         *  else if (subtract  is exist  (-)) { subtraction {}}
-        * 
+        * 2+3-2
         * 
         */    
-    
+       for(let j=0; j<operatorList.length; j++){
+         let resultant=[];
+let operator = operatorList[j]
+         for(let i=0; i<output.length;i++){
+          console.log('output', output);
+          if(output.charAt(i)===operator){
+            resultant.push(calculation(parseInt(output.charAt(i-1)), parseInt(output.charAt(i+1), operator )))
+            // output[i]=parseInt(output.charAt(i-1)) +parseInt(output.charAt(i+1))
+          }
+          else{
+            resultant.push(output.charAt(i))
+          }
+        
+          
+         }
+         setOutput(resultant)
 
-         
+      }
+       console.log('result ' ,output);
          let result =  output.split('+')
          setOutput(sum(result));
 
-
         console.log(result);
+
   }
 
   return (
@@ -74,8 +98,7 @@ function App() {
         {
           numberArray.map((e) => (
             <div className='btn-key' key={e.id} onClick={handleKeyPress}>{e.name}</div>
-          ))
-           
+          ))  
         }
         <div className='btn-key' key="+"  onClick={handleKeyPress}> + </div>
         <div className='btn-key' key="-"  onClick={handleKeyPress}> - </div>
@@ -85,6 +108,7 @@ function App() {
 
     </div>
   );
+  console.log(output);
 }
 
 export default App;
